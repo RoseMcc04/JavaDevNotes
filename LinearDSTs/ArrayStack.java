@@ -1,7 +1,71 @@
+import java.lang.reflect.*;
+import java.util.EmptyStackException;
+
 public class ArrayStack<T> 
 {
+    private Object[] stack;
+    private int length;
+
     public ArrayStack() 
     {
-        
+        this.stack = new Object[10];
+        this.length = 0;
+    }
+
+    public ArrayStack(int size) 
+    {
+        if (size < 0) throw new IllegalArgumentException(size + "  is less than the minimum length of 0");
+        this.stack = new Object[size];
+        this.length = 0;
+    }
+
+    @SuppressWarnings("unchecked")
+    private void ensureCapacity() 
+    {
+        if (this.length == this.stack.length) 
+        {
+            T[] newStack = (T[]) Array.newInstance(this.stack.getClass().getComponentType(), this.stack.length * 2);
+            System.arraycopy(this.stack, 0, newStack, 0, this.stack.length);
+            this.stack = newStack;
+        }
+    }
+
+    public void push(T item) 
+    {
+        ensureCapacity();
+        this.stack[this.length] = item;
+    }
+
+    @SuppressWarnings("unchecked")
+    public T pop() 
+    {
+        if (isEmpty()) throw new EmptyStackException();
+        T item = (T) this.stack[--this.length];
+        this.stack[this.length] = null;
+        return item;
+    }
+
+    public T peek() 
+    {
+        if (isEmpty()) throw new EmptyStackException();
+        return null;
+    }
+
+    public boolean isEmpty() 
+    {
+        return this.length == 0;
+    }
+
+    public int size() 
+    {
+        return this.length;
+    }
+
+    @Override
+    public String toString() 
+    {
+        StringBuilder sb = new StringBuilder("\n");
+        for (Object item : this.stack) sb.append(item + "\n---\n");
+        return sb.toString();
     }
 }
