@@ -53,12 +53,12 @@ public class LinkedQueue<T>
     {
         StringBuilder sb = new StringBuilder();
         LinkedList<T>.Node cursor = this.l.getHead();
+        sb.append("<- null");
         while (cursor != null) 
         {
             sb.append(cursor.getData()).append(" <- ");
             cursor = cursor.getLink();
         }
-        sb.append("null");
         return sb.toString();
     }
 }

@@ -22,7 +22,6 @@ public class LinkedStack<T>
     {
         if (isEmpty()) throw new EmptyStackException();
         T data = this.l.removeFromHead();
-        this.length--;
         return data;
     }
 
