@@ -64,5 +64,7 @@ public class LinkedStack<T>
             ls.push(rand.nextInt(100));
         }
         System.out.println(ls.toString());
+        for (int i = 0; i < 6; i++) ls.pop();
+        System.out.println(ls.toString());
     }
 }
