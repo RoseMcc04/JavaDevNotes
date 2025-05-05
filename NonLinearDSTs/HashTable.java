@@ -7,10 +7,12 @@ import LinearDSTs.LinkedList;
 public class HashTable<T>
 {
     private LinkedList[] table;
+    private int size;
 
     @SuppressWarnings("unchecked")
     public HashTable(int initialCapacity) 
     {
+        this.size = 0;
         this.table = (LinkedList<T>[]) new LinkedList[initialCapacity];
         for (int i = 0; i < initialCapacity; i++) 
         {
@@ -30,17 +32,49 @@ public class HashTable<T>
         for (int i = 0; i < this.table.length; i++) 
         {
             LinkedList<T> oldList = this.table[i];
-            for (LinkedList<T>.Node cursor = oldList.getHead(); cursor.getLink() == null; cursor = cursor.getLink()) 
+            for (LinkedList<T>.Node cursor = oldList.getHead(); cursor.getLink() != null; cursor = cursor.getLink()) 
             {
-                int newIndex = hash(cursor.getData());
+                T data = cursor.getData();
+                int newIndex = Math.abs(data.hashCode() % newCapacity);
                 newTable[newIndex].insertAtTail(data);
             }
         }
         this.table = newTable;
     }
 
+    public void add(T data) 
+    {
+
+    }
+
+    public T remove() 
+    {
+        
+    }
+
+    public boolean contains(T data) 
+    {
+        for (int i = 0; i < this.table.length; i++) 
+        {
+            LinkedList<T> oldList = this.table[i];
+            for (LinkedList<T>.Node cursor = oldList.getHead(); cursor.getLink() != null; cursor = cursor.getLink()) 
+            {
+                if (cursor.getData.equals(data)) 
+                {
+                    return true;
+                }
+            }
+        }
+        return false;
+    }
+
     private int hash(T data) 
     {
         return Math.abs(data.hashCode() % this.table.length);
+    }
+
+    public boolean isEmpty() 
+    {
+        return this.table.length == 0;
     }
 }
