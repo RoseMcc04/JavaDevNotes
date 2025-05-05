@@ -58,4 +58,18 @@ public class ArrayQueue<T>
     {
         return this.size == this.capacity;
     }
+
+    @Override
+    public String toString() 
+    {
+        StringBuilder sb = new StringBuilder();
+        if (isEmpty()) return sb.toString("null");
+        sb.append("null");
+        for (int i = 0; i < this.size; i++) 
+        {
+            int index = (this.front + i) % this.capacity;
+            sb.append(" <- ").append(this.queue[index]);
+        }
+        return sb.toString();
+    }
 }
