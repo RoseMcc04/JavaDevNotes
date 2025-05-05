@@ -32,8 +32,7 @@ public class HashTable<T>
             LinkedList<T> oldList = this.table[i];
             for (LinkedList<T>.Node cursor = oldList.getHead(); cursor.getLink() == null; cursor = cursor.getLink()) 
             {
-                T data = cursor.getData();
-                int newIndex = Math.abs(data.hashCode() % newCapacity);
+                int newIndex = hash(cursor.getData());
                 newTable[newIndex].insertAtTail(data);
             }
         }
