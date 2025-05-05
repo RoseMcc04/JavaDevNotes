@@ -6,12 +6,6 @@ public class ArrayStack<T>
     private Object[] stack;
     private int length;
 
-    public ArrayStack() 
-    {
-        this.stack = new Object[10];
-        this.length = 0;
-    }
-
     public ArrayStack(int size) 
     {
         if (size < 0) throw new IllegalArgumentException(size + "  is less than the minimum length of 0");
