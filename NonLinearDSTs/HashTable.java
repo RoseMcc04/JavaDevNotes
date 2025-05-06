@@ -47,11 +47,30 @@ public class HashTable<T>
         if (find(data)) return;
         int index = hash(key);
         this.table[index] = new LinkedList<T>.Node(data, null);
+        this.size++;
     }
 
-    public T remove() 
+    public boolean remove(T data) 
     {
-        
+        int index = hash(data);
+        LinkedList<T>.Node cursor = this.table[index].getHead();
+        LinkedList<T>.Node prev = null;
+        while (cursor != null) 
+        {
+            if (cursor.getData().equals(data))
+            {
+                if (prev == null) this.table[index] = cursor.getLink();
+                else 
+                {
+                    prev.setLink(cursor.getLink());
+                    return true;
+                }
+            }
+            prev = cursor;
+            cursor = cursor.getLink();
+        }
+        this.size--;
+        return false;
     }
 
     public boolean find(T data) 
@@ -75,6 +94,11 @@ public class HashTable<T>
         return this.table.length == 0;
     }
 
+    public int size() 
+    {
+        return this.size;
+    }
+
     @Override
     public String toString() 
     {
@@ -82,10 +106,13 @@ public class HashTable<T>
         StringBuilder sb = new StringBuilder();
         for (LinkedList<T>.Node head : this.table) 
         {
-            sb.append(head.getData());
             for (LinkedList<T>.Node cursor = head; cursor != null; cursor = cursor.getLink()) 
             {
-                sb.append(" -> ").append(cursor.getData());
+                if (cursor.getLink() == null) 
+                {
+                    sb.append(cursor.getData());
+                }
+                sb.append(cursor.getData()).append(" -> ");
             }
         }
         return sb.toString();
