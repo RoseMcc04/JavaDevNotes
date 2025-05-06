@@ -42,9 +42,11 @@ public class HashTable<T>
         this.table = newTable;
     }
 
-    public void add(T data) 
+    public void insert(T data) 
     {
-
+        if (find(data)) return;
+        int index = hash(key);
+        this.table[index] = new LinkedList<T>.Node(data, null);
     }
 
     public T remove() 
@@ -52,22 +54,17 @@ public class HashTable<T>
         
     }
 
-    public boolean contains(T data) 
+    public boolean find(T data) 
     {
-        for (int i = 0; i < this.table.length; i++) 
+        int index = hash(data);
+        for (LinkedList<T>.Node cursor = this.table[index]; cursor != null; cursor = cursor.getLink()) 
         {
-            LinkedList<T> oldList = this.table[i];
-            for (LinkedList<T>.Node cursor = oldList.getHead(); cursor.getLink() != null; cursor = cursor.getLink()) 
-            {
-                if (cursor.getData.equals(data)) 
-                {
-                    return true;
-                }
-            }
+            if (cursor.getData().equals(data)) return true;
         }
         return false;
     }
 
+    @SuppressWarnings("unused")
     private int hash(T data) 
     {
         return Math.abs(data.hashCode() % this.table.length);
@@ -76,5 +73,21 @@ public class HashTable<T>
     public boolean isEmpty() 
     {
         return this.table.length == 0;
+    }
+
+    @Override
+    public String toString() 
+    {
+        if (isEmpty()) return null;
+        StringBuilder sb = new StringBuilder();
+        for (LinkedList<T>.Node head : this.table) 
+        {
+            sb.append(head.getData());
+            for (LinkedList<T>.Node cursor = head; cursor != null; cursor = cursor.getLink()) 
+            {
+                sb.append(" -> ").append(cursor.getData());
+            }
+        }
+        return sb.toString();
     }
 }
