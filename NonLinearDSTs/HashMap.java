@@ -60,11 +60,11 @@ public class HashMap<K, V>
         LinkedList<Entry<K, V>> bucket = this.buckets[index];
         if (bucket != null) 
         {
-            for (int i = 0; i < bucket.getLength(); i++) 
+            for (Entry<K, V> entry : bucket) 
             {
                 if (entry.getKey().equals(key)) 
                 {
-                    bucket.remove(i);
+                    bucket.remove(entry);
                     this.size--;
                     return;
                 }
