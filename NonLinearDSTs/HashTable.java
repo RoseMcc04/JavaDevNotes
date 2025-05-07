@@ -63,13 +63,13 @@ public class HashTable<T>
                 else 
                 {
                     prev.setLink(cursor.getLink());
+                    this.size--;
                     return true;
                 }
             }
             prev = cursor;
             cursor = cursor.getLink();
         }
-        this.size--;
         return false;
     }
 

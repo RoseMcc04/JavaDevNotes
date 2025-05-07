@@ -88,6 +88,25 @@ public class LinkedList<T>
         }
     }
 
+    public boolean remove(T data) 
+    {
+        Node cursor = this.head;
+        Node prev = null;
+        if (cursor.getData().equals(data)) 
+        {
+            this.head = cursor.getLink();
+            return true;
+        }
+        while ((cursor != null) && !cursor.getData().equals(data)) 
+        {
+            prev = cursor;
+            cursor = cursor.getLink();
+        }
+        if (cursor == null) return false;
+        prev.setLink(cursor.getLink());
+        return true;
+    }
+
     public void reverse() 
     {
         Node prev = null;
@@ -108,7 +127,7 @@ public class LinkedList<T>
     {
         StringBuilder sb = new StringBuilder();
         Node cursor = this.head;
-        while (cursor != null) 
+        while (cursor != null)
         {
             sb.append(cursor.getData()).append(" -> ");
             cursor = cursor.getLink();
