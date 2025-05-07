@@ -103,6 +103,23 @@ public class HashMap<K, V>
         this.buckets = buckets;
     }
 
+    @Override
+    public String toString() 
+    {
+        for (int i = 0; i < this.size; i++) 
+        {
+            LinkedList<Entry<K, V>> bucket = this.buckets[i];
+            for (Entry<K, V> entry : bucket) 
+            {
+                if (entry.getLink() == null) 
+                {
+                    return entry.toString();
+                }
+                return entry.toString() + ", ";
+            }
+        }
+    }
+
     private static class Entry<K, V> 
     {
         private K key;
@@ -132,6 +149,12 @@ public class HashMap<K, V>
         public V getValue() 
         {
             return this.value;
+        }
+
+        @Override
+        public String toString() 
+        {
+            return "{" + entry.getKey().toString() + ", " + entry.getValue().toString() + "}";
         }
     }
 }
