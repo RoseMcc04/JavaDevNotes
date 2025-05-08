@@ -55,6 +55,15 @@ public class ArrayStack<T>
         return this.length;
     }
 
+    public boolean contains(T data) 
+    {
+        for (int i = 0; i < this.stack.length; i++) 
+        {
+            if (this.stack[i].getData().equals(data)) return true;
+        }
+        return false;
+    }
+
     @Override
     public String toString() 
     {

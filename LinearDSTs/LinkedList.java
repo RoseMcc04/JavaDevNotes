@@ -1,11 +1,11 @@
-public class LinkedList<T>
+public class LinkedList<T> implements Iterable<T>
 {
     private Node head;
     private int length;
 
     public LinkedList() 
     {
-        this.head = null;
+        this(null);
         this.length = 0;
     }
 
@@ -50,7 +50,7 @@ public class LinkedList<T>
         return this.head;
     }
 
-    public int getLength() 
+    public int size() 
     {
         return this.length;
     }
@@ -75,7 +75,12 @@ public class LinkedList<T>
     public void removeFromTail() 
     {
         if (this.head == null) return;
-        if (this.head.getLink() == null) this.head = null;
+        if (this.head.getLink() == null) 
+        {
+            this.head = null;
+            this.length--;
+            return;
+        }
         else 
         {
             Node cursor = this.head;
@@ -92,9 +97,11 @@ public class LinkedList<T>
     {
         Node cursor = this.head;
         Node prev = null;
+        if (cursor == null) return false;
         if (cursor.getData().equals(data)) 
         {
             this.head = cursor.getLink();
+            this.length--;
             return true;
         }
         while ((cursor != null) && !cursor.getData().equals(data)) 
@@ -102,8 +109,8 @@ public class LinkedList<T>
             prev = cursor;
             cursor = cursor.getLink();
         }
-        if (cursor == null) return false;
         prev.setLink(cursor.getLink());
+        this.length--;
         return true;
     }
 
@@ -122,6 +129,17 @@ public class LinkedList<T>
         this.head = prev;
     }
 
+    public boolean contains(T data) 
+    {
+        Node cursor = this.head;
+        while (cursor != null) 
+        {
+            if (cursor.getData().equals(data)) return true;
+            cursor = cursor.getLink();
+        }
+        return false;
+    }
+
     @Override
     public String toString() 
     {
@@ -134,6 +152,37 @@ public class LinkedList<T>
         }
         sb.append("null");
         return sb.toString();
+    }
+
+    @Override
+    public Iterator<T> iterator() 
+    {
+        return new Iterator();
+    }
+
+    private class NodeIterator implements Iterator<T> 
+    {
+        private Node cursor;
+
+        public NodeIterator() 
+        {
+            this.cursor = this.head;
+        }
+
+        @Override
+        public boolean hasNext() 
+        {
+            return this.cursor != null;
+        }
+
+        @Override
+        public T next() 
+        {
+            if (!hasNext()) throw new NoSuchElementException();
+            T data = this.cursor.getData();
+            this.cursor = this.cursor.getLink();
+            return data;
+        }
     }
 
     public class Node
@@ -171,6 +220,12 @@ public class LinkedList<T>
         public Node getLink() 
         {
             return this.link;
+        }
+
+        @Override
+        public Node toString() 
+        {
+            return this.data.toString();
         }
     }
 }

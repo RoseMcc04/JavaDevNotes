@@ -1,6 +1,6 @@
 import LinearDSTs.LinkedList;
 
-public class HashMap<Entry<K, V>> 
+public class HashMap<K, V> 
 {
     private static final int DEFAULT_CAPACITY = 16;
     private static final double LOAD_FACTOR = 0.75;
@@ -18,24 +18,24 @@ public class HashMap<Entry<K, V>>
     public HashMap(int capacity) 
     {
         this.capacity = capacity;
-        this.buckets = (LinkedList<Entry<K, V>>[]) new LinkedList[capacity];
+        this.buckets = new LinkedList<>[capacity];
         this.size = 0;
     }
 
     public void insert(K key, V value) 
     {
         int index = getIndex(key);
-        if (this.buckets[index] == null) this.buckets[index] = new LinkedList<T>();
+        if (this.buckets[index] == null) this.buckets[index] = new LinkedList<>();
         LinkedList<Entry<K, V>> bucket = this.buckets[index];
         for (Entry<K, V> entry : bucket) 
         {
-            if (entry.getKey.equals(key)) 
+            if (entry.getKey().equals(key)) 
             {
                 entry.setValue(value);
                 return;
             }
         }
-        this.bucket.insertAtTail(new Entry<K, V>(key, value));
+        this.bucket.insertAtTail(new Entry<>(key, value));
         this.size++;
         if ((double) this.size / this.capacity > LOAD_FACTOR) resize();
     }
@@ -86,38 +86,39 @@ public class HashMap<Entry<K, V>>
     private void resize() 
     {
         int newCapacity = this.capacity * 2;
-        LinkedList<Entry<K, V>>[] buckets = (LinkedList<Entry<K, V>>) new LinkedList[newCapacity];
-        for (LinkedList<Entry<K, V>> bucket : buckets) 
+        LinkedList<Entry<K, V>>[] newBuckets = (LinkedList<Entry<K, V>>) new LinkedList[newCapacity];
+        for (LinkedList<Entry<K, V>> bucket : newBuckets) 
         {
             if (bucket != null) 
             {
                 for (Entry<K, V> entry : bucket) 
                 {
-                    if (entry.getKey() == null) ? 0 : Math.abs(entry.getKey().hashCode() % newCapacity);
-                    if (newBuckets[index == null]) newBuckets[index] = new LinkedList<Entry<K, V>>();
-                    newBuckets[index].setData(entry);
+                    int index = if (entry.getKey() == null) ? 0 : Math.abs(entry.getKey().hashCode() % newCapacity);
+                    if (newBuckets[index] == null) newBuckets[index] = new LinkedList<Entry<K, V>>();
+                    newBuckets[index].insertAtTail(entry);
                 }
             }
         }
         this.capacity = newCapacity;
-        this.buckets = buckets;
+        this.buckets = newBuckets;
     }
 
     @Override
     public String toString() 
     {
-        for (int i = 0; i < this.size; i++) 
+        StringBuilder sb = new StringBuilder();
+        for (LinkedList<Entry<K, V>> bucket : this.buckets) 
         {
-            LinkedList<Entry<K, V>> bucket = this.buckets[i];
-            for (Entry<K, V> entry : bucket) 
+            if (bucket != null) 
             {
-                if (entry.getLink() == null) 
+                for (Entry<K, V> entry : bucket) 
                 {
-                    return entry.toString();
+                    sb.append(entry.toString()).append(", ");
                 }
-                return entry.toString() + ", ";
             }
         }
+        if (sb.length() > 1) sb.setLength(sb.length() - 2);
+        return sb.toString();
     }
 
     private static class Entry<K, V> 
@@ -154,7 +155,7 @@ public class HashMap<Entry<K, V>>
         @Override
         public String toString() 
         {
-            return "{" + entry.getKey().toString() + ", " + entry.getValue().toString() + "}";
+            return "{" + this.key.toString() + ", " + this.value.toString() + "}";
         }
     }
 }
