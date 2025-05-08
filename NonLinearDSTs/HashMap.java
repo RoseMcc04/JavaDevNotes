@@ -1,6 +1,6 @@
 import LinearDSTs.LinkedList;
 
-public class HashMap<K, V> 
+public class HashMap<Entry<K, V>> 
 {
     private static final int DEFAULT_CAPACITY = 16;
     private static final double LOAD_FACTOR = 0.75;
@@ -35,7 +35,7 @@ public class HashMap<K, V>
                 return;
             }
         }
-        this.bucket.insertAtTail(new Entry<>(key, value));
+        this.bucket.insertAtTail(new Entry<K, V>(key, value));
         this.size++;
         if ((double) this.size / this.capacity > LOAD_FACTOR) resize();
     }
