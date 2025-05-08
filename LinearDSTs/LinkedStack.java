@@ -1,21 +1,18 @@
 import java.util.EmptyStackException;
 import java.util.Random;
 
-public class LinkedStack<T> 
+public class LinkedStack<T> implements Iterable<T>
 {
     private LinkedList<T> l;
-    private int length;
 
     public LinkedStack() 
     {
         this.l = new LinkedList<T>();
-        this.length = 0;
     }
 
     public void push(T data) 
     {
         l.insertAtHead(data);
-        this.length++;
     }
 
     public T pop() 
@@ -33,12 +30,23 @@ public class LinkedStack<T>
 
     public boolean isEmpty() 
     {
-        return this.length == 0;
+        return this.l.size() == 0;
     }
 
     public int size() 
     {
-        return this.length;
+        return this.l.size();
+    }
+
+    public boolean contains(T data) 
+    {
+        LinkedList<T>.Node cursor = this.l.getHead();
+        while (cursor != null) 
+        {
+            if (cursor.getData().equals(data)) return true;
+            cursor = cursor.getLink();
+        }
+        return false;
     }
 
     @Override
@@ -46,7 +54,7 @@ public class LinkedStack<T>
     {
         LinkedList<T>.Node cursor = this.l.getHead();
         StringBuilder sb = new StringBuilder("\n---\n");
-        while (cursor.getLink() != null) 
+        while (cursor != null) 
         {
             sb.append(cursor.getData()).append("\n---\n");
             cursor = cursor.getLink();
@@ -54,16 +62,34 @@ public class LinkedStack<T>
         return sb.toString();
     }
 
-    public static void main(String[] args) 
+    @Override
+    public Iterator<T> iterator() 
     {
-        LinkedStack<Integer> ls = new LinkedStack<Integer>();
-        Random rand = new Random();
-        for (int i = 0; i < 15; i++) 
+        return new LinkedStackIterator();
+    }
+
+    private class LinkedStackIterator implements Iterator<T> 
+    {
+        private LinkedStack<T> cursor;
+
+        public LinkedStackIterator() 
         {
-            ls.push(rand.nextInt(100));
+            this.cursor = this.l.getHead();
         }
-        System.out.println(ls.toString());
-        for (int i = 0; i < 6; i++) ls.pop();
-        System.out.println(ls.toString());
+
+        @Override
+        public boolean hasNext() 
+        {
+            return this.cursor != null;
+        }
+
+        @Override
+        public T next() 
+        {
+            if (!hasNext()) throw new NoSuchElementException();
+            T data = this.cursor.getData();
+            cursor = cursor.getLink();
+            return data;
+        }
     }
 }

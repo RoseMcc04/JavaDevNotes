@@ -1,7 +1,7 @@
 import java.lang.reflect.*;
 import java.util.EmptyStackException;
 
-public class ArrayStack<T> 
+public class ArrayStack<T> implements Iterable<T> 
 {
     private Object[] stack;
     private int length;
@@ -30,6 +30,12 @@ public class ArrayStack<T>
         this.stack[this.length] = item;
     }
 
+    public void push(T item) 
+    {
+        ensureCapacity();
+        this.stack[this.length++] = item;
+    }
+
     @SuppressWarnings("unchecked")
     public T pop() 
     {
@@ -42,7 +48,7 @@ public class ArrayStack<T>
     public T peek() 
     {
         if (isEmpty()) throw new EmptyStackException();
-        return null;
+        return this.stack[this.length - 1];
     }
 
     public boolean isEmpty() 
@@ -57,9 +63,9 @@ public class ArrayStack<T>
 
     public boolean contains(T data) 
     {
-        for (int i = 0; i < this.stack.length; i++) 
+        for (int i = 0; i < this.length; i++) 
         {
-            if (this.stack[i].getData().equals(data)) return true;
+            if (this.stack[i].equals(data)) return true;
         }
         return false;
     }
@@ -68,7 +74,31 @@ public class ArrayStack<T>
     public String toString() 
     {
         StringBuilder sb = new StringBuilder("\n");
-        for (Object item : this.stack) sb.append(item + "\n---\n");
+        for (int i = 0; i < this.length; i++) sb.append(this.stack[i].toString() + "\n---\n");
         return sb.toString();
+    }
+
+    @Override
+    public Iterator<T> iterator() 
+    {
+        return new ArrayStackIterator();
+    }
+
+    private class ArrayStackIterator implements Iterator<T> 
+    {
+        private int currentIndex = 0;
+
+        @Override
+        public boolean hasNext() 
+        {
+            return currentIndex < this.length;
+        }
+
+        @Override
+        public T next() 
+        {
+            if (!hasNext()) throw new NoSuchElementException();
+            return (T) this.stack[currentIndex++];
+        }
     }
 }
