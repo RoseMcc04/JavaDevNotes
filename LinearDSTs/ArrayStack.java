@@ -73,7 +73,7 @@ public class ArrayStack<T> implements Iterable<T>
     @Override
     public String toString() 
     {
-        StringBuilder sb = new StringBuilder("\n");
+        StringBuilder sb = new StringBuilder("\n---\n");
         for (int i = 0; i < this.length; i++) sb.append(this.stack[i].toString() + "\n---\n");
         return sb.toString();
     }
