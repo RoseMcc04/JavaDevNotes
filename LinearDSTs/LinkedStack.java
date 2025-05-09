@@ -1,5 +1,6 @@
 import java.util.EmptyStackException;
 import java.util.Random;
+import java.util.Iterator;
 
 public class LinkedStack<T> implements Iterable<T>
 {

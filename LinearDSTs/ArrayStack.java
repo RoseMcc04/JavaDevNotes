@@ -1,4 +1,5 @@
 import java.lang.reflect.*;
+import java.util.Iterator;
 import java.util.EmptyStackException;
 
 public class ArrayStack<T> implements Iterable<T> 

@@ -46,7 +46,7 @@ public class HashTable<T>
     {
         if (find(data)) return;
         int index = hash(key);
-        this.table[index] = new LinkedList<T>.Node(data, null);
+        this.table[index] = new LinkedList<T>.insertAtTail(data, null);
         this.size++;
     }
 
@@ -59,7 +59,7 @@ public class HashTable<T>
         {
             if (cursor.getData().equals(data))
             {
-                if (prev == null) this.table[index] = cursor.getLink();
+                if (prev == null) this.table[index].removeFromHead();
                 else 
                 {
                     prev.setLink(cursor.getLink());
@@ -76,7 +76,7 @@ public class HashTable<T>
     public boolean find(T data) 
     {
         int index = hash(data);
-        for (LinkedList<T>.Node cursor = this.table[index]; cursor != null; cursor = cursor.getLink()) 
+        for (LinkedList<T>.Node cursor = this.table[index].getHead(); cursor != null; cursor = cursor.getLink()) 
         {
             if (cursor.getData().equals(data)) return true;
         }
@@ -91,7 +91,7 @@ public class HashTable<T>
 
     public boolean isEmpty() 
     {
-        return this.table.length == 0;
+        return this.size == 0;
     }
 
     public int size() 
@@ -104,17 +104,17 @@ public class HashTable<T>
     {
         if (isEmpty()) return null;
         StringBuilder sb = new StringBuilder();
-        for (LinkedList<T>.Node head : this.table) 
+        for (int i = 0; i < this.table.length; i++) 
         {
-            for (LinkedList<T>.Node cursor = head; cursor != null; cursor = cursor.getLink()) 
+            LinkedList<T>.Node cursor = this.table[i].getHead();
+            while (cursor != null) 
             {
-                if (cursor.getLink() == null) 
-                {
-                    sb.append(cursor.getData());
-                }
-                sb.append(cursor.getData()).append(" -> ");
+                sb.append(cursor.getData().toString());
+                if (cursor.getLink() != null) sb.append(" -> ");
+                cursor = cursor.getLink();
             }
         }
+        sb.append("\n");
         return sb.toString();
     }
 }

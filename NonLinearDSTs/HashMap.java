@@ -35,7 +35,7 @@ public class HashMap<K, V>
                 return;
             }
         }
-        this.bucket.insertAtTail(new Entry<>(key, value));
+        bucket.insertAtTail(new Entry<>(key, value));
         this.size++;
         if ((double) this.size / this.capacity > LOAD_FACTOR) resize();
     }
@@ -87,13 +87,13 @@ public class HashMap<K, V>
     {
         int newCapacity = this.capacity * 2;
         LinkedList<Entry<K, V>>[] newBuckets = (LinkedList<Entry<K, V>>) new LinkedList[newCapacity];
-        for (LinkedList<Entry<K, V>> bucket : newBuckets) 
+        for (LinkedList<Entry<K, V>> bucket : this.buckets) 
         {
             if (bucket != null) 
             {
                 for (Entry<K, V> entry : bucket) 
                 {
-                    int index = if (entry.getKey() == null) ? 0 : Math.abs(entry.getKey().hashCode() % newCapacity);
+                    int index = (entry.getKey() == null) ? 0 : Math.abs(entry.getKey().hashCode() % newCapacity);
                     if (newBuckets[index] == null) newBuckets[index] = new LinkedList<Entry<K, V>>();
                     newBuckets[index].insertAtTail(entry);
                 }

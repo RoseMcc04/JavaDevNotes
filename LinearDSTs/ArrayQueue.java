@@ -1,3 +1,5 @@
+import java.util.Iterator;
+
 public class ArrayQueue<T> 
 {
     private Object[] queue;
@@ -40,7 +42,7 @@ public class ArrayQueue<T>
         T item = (T) this.queue[this.front];
         this.queue[front] = null;
         this.front = (this.front + 1) % capacity;
-        this.size++;
+        this.size--;
         return item;
     }
 
@@ -62,8 +64,8 @@ public class ArrayQueue<T>
     @Override
     public String toString() 
     {
+        if (isEmpty()) return null;
         StringBuilder sb = new StringBuilder();
-        if (isEmpty()) return sb.toString("null");
         sb.append("null");
         for (int i = 0; i < this.size; i++) 
         {
@@ -71,5 +73,33 @@ public class ArrayQueue<T>
             sb.append(" <- ").append(this.queue[index]);
         }
         return sb.toString();
+    }
+
+    @Override
+    public Iterator<T> iterator() 
+    {
+        return new ArrayQueueIterator();
+    }
+
+    private class ArrayQueueIterator implements Iterator<T> 
+    {
+        private int index = 0;
+
+        @Override
+        public boolean hasNext() 
+        {
+            this.index < this.size;
+        }
+
+        @Override
+        @SuppressWarnings("unchecked")
+        public T next() 
+        {
+            if (!hasNext()) throw new NoSuchElementException();
+            int actualIndex = (this.front + this.index) % this.capacity;
+            T data = (T) this.queue[actualIndex];
+            this.index++;
+            return data;
+        }
     }
 }

@@ -1,4 +1,6 @@
-public class LinkedQueue<T> 
+import java.util.Iterator;
+
+public class LinkedQueue<T> implements Iterable<T>
 {
     private LinkedList<T> l;
 
@@ -10,8 +12,7 @@ public class LinkedQueue<T>
     public boolean enqueue(T data) 
     {
         if (data == null) return false;
-        if (!(data instanceof T)) return false;
-        this.l.insertAtHead(data);
+        this.l.insertAtTail(data);
         return true;
     }
 
@@ -53,12 +54,44 @@ public class LinkedQueue<T>
     {
         StringBuilder sb = new StringBuilder();
         LinkedList<T>.Node cursor = this.l.getHead();
-        sb.append("<- null");
+        sb.append("Front -> ");
         while (cursor != null) 
         {
-            sb.append(cursor.getData()).append(" <- ");
+            sb.append(cursor.getData()).append(" -> ");
             cursor = cursor.getLink();
         }
+        sb.append(" -> Rear");
         return sb.toString();
+    }
+
+    @Override
+    public Iterator<T> iterator() 
+    {
+        return new LinkedQueueIterator();
+    }
+
+    private class LinkedQueueIterator implements Iterator<T> 
+    {
+        private LinkedList<T>.Node cursor;
+
+        public LinkedQueueIterator() 
+        {
+            this.cursor = this.l.getHead();
+        }
+
+        @Override
+        public boolean hasNext() 
+        {
+            return this.cursor != null;
+        }
+
+        @Override
+        public T next() 
+        {
+            if (!hasNext()) throw new NoSuchElementException();
+            T data = cursor.getData();
+            cursor = cursor.getLink();
+            return data;
+        }
     }
 }
